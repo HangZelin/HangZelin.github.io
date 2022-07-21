@@ -6,7 +6,7 @@
   <link href="http://hangzl.xyz/atom.xml" rel="self"/>
   
   <link href="http://hangzl.xyz/"/>
-  <updated>2022-07-20T02:40:22.253Z</updated>
+  <updated>2022-07-21T01:55:09.979Z</updated>
   <id>http://hangzl.xyz/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java代码规范01</title>
+    <link href="http://hangzl.xyz/2022/07/21/java%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%8301/"/>
+    <id>http://hangzl.xyz/2022/07/21/java%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%8301/</id>
+    <published>2022-07-21T01:51:08.000Z</published>
+    <updated>2022-07-21T01:55:09.979Z</updated>
+    
+    
+    <summary type="html">Java代码规范大全。</summary>
+    
+    
+    
+    <category term="Java" scheme="http://hangzl.xyz/categories/Java/"/>
+    
+    
+    <category term="code standards" scheme="http://hangzl.xyz/tags/code-standards/"/>
+    
+  </entry>
   
   <entry>
     <title>Spring boot Bilibili Api开发日志</title>
