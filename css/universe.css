@@ -1,0 +1,19 @@
+/* 滑稽 */
+body {
+    cursor: url(https://bu.dusays.com/2022/05/17/6283c365d20dd.png), auto;
+}
+
+.hide-block>.hide-button.open,
+.hide-inline>.hide-button.open {
+    display: block
+}
+
+canvas:hover{
+cursor:url(https://bu.dusays.com/2022/05/17/6283c365d20dd.png) ,auto
+}
+
+a,
+button,
+img {
+    cursor: url(https://bu.dusays.com/2022/05/17/6283c376afcfc.png), auto
+}

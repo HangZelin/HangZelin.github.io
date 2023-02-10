@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>hangzl&#39;s Blog</title>
+  <icon>http://hangzl.xyz/icon.png</icon>
+  <subtitle>总之岁月漫长 然而值得等待</subtitle>
+  <link href="http://hangzl.xyz/atom.xml" rel="self"/>
+  
+  <link href="http://hangzl.xyz/"/>
+  <updated>2023-02-10T14:28:59.968Z</updated>
+  <id>http://hangzl.xyz/</id>
+  
+  <author>
+    <name>Hang Zelin</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2022的一小点总结</title>
+    <link href="http://hangzl.xyz/2022/12/31/2022%E6%80%BB%E7%BB%93/"/>
+    <id>http://hangzl.xyz/2022/12/31/2022%E6%80%BB%E7%BB%93/</id>
+    <published>2022-12-31T14:29:00.000Z</published>
+    <updated>2023-02-10T14:28:59.968Z</updated>
+    
+    
+    <summary type="html">2022，就这么说再见了。</summary>
+    
+    
+    
+    <category term="随笔" scheme="http://hangzl.xyz/categories/%E9%9A%8F%E7%AC%94/"/>
+    
+    
+    <category term="随笔" scheme="http://hangzl.xyz/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>java代码规范01</title>
+    <link href="http://hangzl.xyz/2022/07/21/java%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%8301/"/>
+    <id>http://hangzl.xyz/2022/07/21/java%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%8301/</id>
+    <published>2022-07-21T01:51:08.000Z</published>
+    <updated>2023-02-10T14:28:59.968Z</updated>
+    
+    
+    <summary type="html">Java代码规范大全。本笔记旨在记录Java开发手册的所有重点内容。不积硅步无以至千里。</summary>
+    
+    
+    
+    <category term="Java" scheme="http://hangzl.xyz/categories/Java/"/>
+    
+    
+    <category term="code standards" scheme="http://hangzl.xyz/tags/code-standards/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring boot Bilibili Api开发日志</title>
+    <link href="http://hangzl.xyz/2022/07/14/api/"/>
+    <id>http://hangzl.xyz/2022/07/14/api/</id>
+    <published>2022-07-13T16:07:00.000Z</published>
+    <updated>2023-02-10T14:28:59.968Z</updated>
+    
+    
+    <summary type="html">学习Spring boot项目时用到的基本api部分内容。包含了Restful Api 和 JWT 等常见网络请求和身份验证功能。</summary>
+    
+    
+    
+    <category term="backend" scheme="http://hangzl.xyz/categories/backend/"/>
+    
+    
+    <category term="Api" scheme="http://hangzl.xyz/tags/Api/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Test</title>
+    <link href="http://hangzl.xyz/2022/07/13/test/"/>
+    <id>http://hangzl.xyz/2022/07/13/test/</id>
+    <published>2022-07-13T15:56:32.000Z</published>
+    <updated>2023-02-10T14:28:59.968Z</updated>
+    
+    
+    <summary type="html">简单测试一下可不可以post东西上去！Test!</summary>
+    
+    
+    
+    
+  </entry>
+  
+</feed>
