@@ -6,7 +6,7 @@
   <link href="http://hangzl.xyz/atom.xml" rel="self"/>
   
   <link href="http://hangzl.xyz/"/>
-  <updated>2023-02-10T14:28:59.968Z</updated>
+  <updated>2023-08-28T03:13:33.407Z</updated>
   <id>http://hangzl.xyz/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Regux教程</title>
+    <link href="http://hangzl.xyz/2023/08/27/Regux%E6%95%99%E7%A8%8B/"/>
+    <id>http://hangzl.xyz/2023/08/27/Regux%E6%95%99%E7%A8%8B/</id>
+    <published>2023-08-27T04:58:17.000Z</published>
+    <updated>2023-08-28T03:13:33.407Z</updated>
+    
+    
+    <summary type="html">必须掌握的一些小技巧</summary>
+    
+    
+    
+    <category term="Linux" scheme="http://hangzl.xyz/categories/Linux/"/>
+    
+    
+    <category term="Linux" scheme="http://hangzl.xyz/tags/Linux/"/>
+    
+  </entry>
   
   <entry>
     <title>2022的一小点总结</title>
