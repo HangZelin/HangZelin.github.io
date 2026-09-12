@@ -20,11 +20,38 @@
       aside.append(card);
       if (!document.getElementById('clstr_globe')) { const script = document.createElement('script');script.id = 'clstr_globe';script.src = 'https://clustrmaps.com/globe.js?d=Y0VSyADWx2QaGmn8YuD8evV_TkqMyXZ51eV3lbgpMY4';script.async = true;script.onerror = () => {card.querySelector('.integration-status').textContent = '地图服务暂不可达，历史统计需在 ClustrMaps 账号内确认。';};card.querySelector('#visitor-globe').append(script); }
     }
-    if (!document.getElementById('music-panel')) {
-      const panel = document.createElement('details');panel.id = 'music-panel';
-      panel.innerHTML = '<summary>♫ 网易云歌单</summary><a href="https://music.163.com/#/playlist?id=8692607455" target="_blank" rel="noopener">在网易云打开歌单</a><p class="integration-status">播放器未显示或无法播放时，请在网易云打开歌单。</p><div class="music-embed"></div>';
-      panel.addEventListener('toggle', () => { if(panel.open&&!panel.querySelector('iframe')) {const frame=document.createElement('iframe');frame.title='网易云歌单播放器';frame.src='https://music.163.com/outchain/player?type=0&id=8692607455&auto=0&height=430';frame.width='310';frame.height='450';frame.loading='lazy';frame.allow='autoplay';panel.querySelector('.music-embed').append(frame);}}, {once:false});
-      document.body.append(panel);
+    if (!document.getElementById('site-music-player') && window.APlayer) {
+      const container = document.createElement('div');
+      container.id = 'site-music-player'; container.className = 'no-destroy';
+      document.body.append(container);
+      const player = new APlayer({container, fixed:true, mini:true, listFolded:false, order:'list', preload:'none', autoplay:false, audio:[]});
+      let loading = false;
+      const showStatus = (message, retry) => {
+        player.template.title.textContent = message;
+        player.template.author.textContent = ' · ';
+        const link = document.createElement('a'); link.href = 'https://music.163.com/#/playlist?id=8692607455';
+        link.target = '_blank'; link.rel = 'noopener'; link.textContent = '网易云 ↗';
+        player.template.author.append(link);
+        if (retry) {
+          const button = document.createElement('button'); button.type = 'button'; button.className = 'music-retry'; button.textContent = '重试';
+          button.addEventListener('click', loadPlaylist); player.template.author.append(button);
+        }
+      };
+      const escape = text => String(text || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      async function loadPlaylist() {
+        if (loading) return; loading = true; showStatus('正在加载歌单…', false);
+        try {
+          const response = await fetch('https://api.i-meto.com/meting/api?server=netease&type=playlist&id=8692607455', {signal:AbortSignal.timeout(12000)});
+          if (!response.ok) throw Error('Playlist request failed');
+          const data = await response.json();
+          if (!Array.isArray(data)) throw Error('Invalid playlist');
+          const tracks = data.filter(track => typeof track.url === 'string' && /^https:\/\//.test(track.url)).map(track => ({name:escape(track.name),artist:escape(track.artist),url:track.url,cover:typeof track.cover === 'string' && /^https:\/\//.test(track.cover) ? track.cover : ''}));
+          if (!tracks.length) throw Error('Empty playlist');
+          player.list.clear(); player.list.add(tracks);
+        } catch (_) { showStatus('歌单暂时不可用', true); }
+        finally { loading = false; }
+      }
+      loadPlaylist();
     }
     if (!document.getElementById('live2d-local-loader')) {
       const script=document.createElement('script');script.id='live2d-local-loader';script.src='/live2dw/lib/L2Dwidget.min.js';
