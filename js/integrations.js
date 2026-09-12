@@ -45,7 +45,7 @@
           if (!response.ok) throw Error('Playlist request failed');
           const data = await response.json();
           if (!Array.isArray(data)) throw Error('Invalid playlist');
-          const tracks = data.filter(track => typeof track.url === 'string' && /^https:\/\//.test(track.url)).map(track => ({name:escape(track.name),artist:escape(track.artist),url:track.url,cover:typeof track.cover === 'string' && /^https:\/\//.test(track.cover) ? track.cover : ''}));
+          const tracks = data.filter(track => typeof track.url === 'string' && /^https:\/\//.test(track.url)).map(track => ({name:escape(track.name || track.title),artist:escape(track.artist || track.author),url:track.url,cover:typeof track.cover === 'string' && /^https:\/\//.test(track.cover) ? track.cover : ''}));
           if (!tracks.length) throw Error('Empty playlist');
           player.list.clear(); player.list.add(tracks);
         } catch (_) { showStatus('歌单暂时不可用', true); }
