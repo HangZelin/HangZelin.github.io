@@ -29,7 +29,7 @@
       const showStatus = (message, retry) => {
         player.template.title.textContent = message;
         player.template.author.textContent = ' · ';
-        const link = document.createElement('a'); link.href = 'https://music.163.com/#/playlist?id=8692607455';
+        const link = document.createElement('a'); link.href = 'https://music.163.com/#/playlist?id=18377477423';
         link.target = '_blank'; link.rel = 'noopener'; link.textContent = '网易云 ↗';
         player.template.author.append(link);
         if (retry) {
@@ -41,12 +41,42 @@
       async function loadPlaylist() {
         if (loading) return; loading = true; showStatus('正在加载歌单…', false);
         try {
-          const response = await fetch('https://api.i-meto.com/meting/api?server=netease&type=playlist&id=8692607455', {signal:AbortSignal.timeout(12000)});
-          if (!response.ok) throw Error('Playlist request failed');
-          const data = await response.json();
-          if (!Array.isArray(data)) throw Error('Invalid playlist');
-          const tracks = data.filter(track => typeof track.url === 'string' && /^https:\/\//.test(track.url)).map(track => ({name:escape(track.name || track.title),artist:escape(track.artist || track.author),url:track.url,cover:typeof track.cover === 'string' && /^https:\/\//.test(track.cover) ? track.cover : ''}));
-          if (!tracks.length) throw Error('Empty playlist');
+          const configResponse = await fetch('/data/music-config.json', {cache:'no-store', signal:AbortSignal.timeout(12000)});
+          if (!configResponse.ok) throw Error('Music configuration unavailable');
+          const config = await configResponse.json();
+          const local = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
+          const base = local ? (config.localApiBase || config.apiBase) : config.apiBase;
+          if (!base) { showStatus('音乐接口待配置', false); return; }
+          const api = new URL(base);
+          if (api.protocol !== 'https:' && !(local && api.protocol === 'http:' && ['localhost','127.0.0.1','[::1]'].includes(api.hostname))) throw Error('Invalid API address');
+          const request = async (route, params) => {
+            const url = new URL(api.href.replace(/\/$/, '') + route);
+            url.search = new URLSearchParams(params).toString();
+            const response = await fetch(url, {signal:AbortSignal.timeout(20000)});
+            if (!response.ok) throw Error('Music request failed');
+            const body = await response.json();
+            if (body.code !== 200) throw Error('Music API error');
+            return body;
+          };
+          const playlist = await request('/playlist/detail', {id:config.playlistId});
+          const ids = playlist.playlist?.trackIds?.map(track => track.id);
+          if (!ids?.length) throw Error('Empty playlist');
+          const [details, audio] = await Promise.all([
+            request('/song/detail', {ids:ids.join(',')}),
+            request('/song/url', {id:ids.join(','), br:128000})
+          ]);
+          const urls = new Map((audio.data || []).map(track => [String(track.id), track]));
+          const songs = new Map((details.songs || []).map(track => [String(track.id), track]));
+          const https = value => {
+            try { const url = new URL(value); if (!['http:','https:'].includes(url.protocol)) return ''; url.protocol = 'https:'; return url.href; } catch (_) { return ''; }
+          };
+          const tracks = ids.flatMap(id => {
+            const song = songs.get(String(id)); const audio = urls.get(String(id));
+            const url = https(audio?.url);
+            if (!song || !url) return [];
+            return [{name:escape(song.name + (audio.freeTrialInfo ? '（试听）' : '')), artist:escape((song.ar || []).map(artist => artist.name).join(' / ')), url, cover:https(song.al?.picUrl)}];
+          });
+          if (!tracks.length) throw Error('No playable tracks');
           player.list.clear(); player.list.add(tracks);
         } catch (_) { showStatus('歌单暂时不可用', true); }
         finally { loading = false; }
