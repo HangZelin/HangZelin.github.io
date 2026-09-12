@@ -1,5 +1,15 @@
 (() => {
+  const coverFallback = img => {
+    if (!img.matches?.('.media-item img') || img.dataset.coverFallback) return;
+    img.dataset.coverFallback = 'true';
+    img.removeAttribute('data-lazy-src');
+    img.src = '/img/cover-unavailable.svg';
+  };
+  document.addEventListener('error', event => coverFallback(event.target), true);
   const init = () => {
+    document.querySelectorAll('.media-item img').forEach(img => {
+      if (img.complete && !img.naturalWidth && img.getAttribute('src')) coverFallback(img);
+    });
     const posts = document.querySelector('#recent-posts');
     if (posts && !document.querySelector('#github-status-card')) {
       const card = document.createElement('section');
