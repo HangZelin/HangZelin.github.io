@@ -142,3 +142,7 @@ hr:before {
 #article-container h6:hover {
     padding-left: 1.2rem
 }
+/* Preserve the original two-by-two album overview on desktop. */
+#article-container .gallery-overview{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+#article-container .gallery-overview figure.gallery-group{float:none;width:auto;margin:0}
+@media(max-width:600px){#article-container .gallery-overview{grid-template-columns:1fr}}
