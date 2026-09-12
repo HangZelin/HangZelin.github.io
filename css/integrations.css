@@ -4,3 +4,27 @@
 .media-item img{flex-shrink:0}.media-item>div{min-width:0;overflow-wrap:anywhere}
 
 #site-music-player{z-index:100}#site-music-player .music-retry{margin-left:8px;color:#49b1f5;cursor:pointer;background:transparent;border:0;font-size:12px}#site-music-player .aplayer-author a{color:#777}
+
+/* Match Butterfly's night mode without changing APlayer's layout. */
+[data-theme='dark'] #site-music-player,
+[data-theme='dark'] #site-music-player .aplayer-body,
+[data-theme='dark'] #site-music-player .aplayer-list{background:#202124;color:#e8eaed}
+[data-theme='dark'] #site-music-player .aplayer-info,
+[data-theme='dark'] #site-music-player .aplayer-list,
+[data-theme='dark'] #site-music-player .aplayer-list li{border-color:#383b40}
+[data-theme='dark'] #site-music-player .aplayer-list li:hover{background:#30343b}
+[data-theme='dark'] #site-music-player .aplayer-list li.aplayer-list-light{background:#354452}
+[data-theme='dark'] #site-music-player .aplayer-title,
+[data-theme='dark'] #site-music-player .aplayer-list-title{color:#e8eaed}
+[data-theme='dark'] #site-music-player .aplayer-author,
+[data-theme='dark'] #site-music-player .aplayer-author a,
+[data-theme='dark'] #site-music-player .aplayer-list-author,
+[data-theme='dark'] #site-music-player .aplayer-list-index,
+[data-theme='dark'] #site-music-player .aplayer-time{color:#b9c0ca}
+[data-theme='dark'] #site-music-player .aplayer-controller .aplayer-icon path,
+[data-theme='dark'] #site-music-player .aplayer-miniswitcher .aplayer-icon path{fill:#cbd2dc}
+[data-theme='dark'] #site-music-player .aplayer-miniswitcher{background:#30343b}
+[data-theme='dark'] #site-music-player .aplayer-bar{background:#454b55}
+[data-theme='dark'] #site-music-player .aplayer-loaded{background:#77818f}
+[data-theme='dark'] #site-music-player .aplayer-notice{background:#354452;color:#f1f3f5}
+[data-theme='dark'] #site-music-player .aplayer-list ol::-webkit-scrollbar-thumb{background:#626b78}
