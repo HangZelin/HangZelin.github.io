@@ -24,7 +24,24 @@
       const container = document.createElement('div');
       container.id = 'site-music-player'; container.className = 'no-destroy';
       document.body.append(container);
-      const player = new APlayer({container, fixed:true, mini:true, listFolded:false, order:'list', preload:'none', autoplay:false, audio:[]});
+      const player = new APlayer({container, fixed:true, mini:true, listFolded:false, order:'list', preload:'auto', autoplay:false, audio:[], customAudioType:{
+        unavailable: (element, track, instance) => { instance.pause(); element.removeAttribute('src'); element.load(); }
+      }});
+      const play = player.play.bind(player);
+      player.play = () => {
+        const track = player.list.audios[player.list.index];
+        if (!track?.url) { player.notice(track?.pending ? '音源正在加载，请稍候' : '这首歌暂时没有可用音源，可前往网易云收听', 4000); return; }
+        return play();
+      };
+      container.addEventListener('click', event => {
+        const row = event.target.closest('.aplayer-list li');
+        if (!row) return;
+        event.stopImmediatePropagation();
+        const index = Array.from(player.template.listOl.children).indexOf(row);
+        if (index < 0) return;
+        if (index !== player.list.index) { player.list.switch(index); player.play(); }
+        else player.toggle();
+      }, true);
       let loading = false;
       const showStatus = (message, retry) => {
         player.template.title.textContent = message;
@@ -61,23 +78,32 @@
           const playlist = await request('/playlist/detail', {id:config.playlistId});
           const ids = playlist.playlist?.trackIds?.map(track => track.id);
           if (!ids?.length) throw Error('Empty playlist');
-          const [details, audio] = await Promise.all([
-            request('/song/detail', {ids:ids.join(',')}),
-            request('/song/url', {id:ids.join(','), br:128000})
-          ]);
-          const urls = new Map((audio.data || []).map(track => [String(track.id), track]));
+          // Show metadata without waiting for the slower audio URL request.
+          const audioPromise = request('/song/url', {id:ids.join(','), br:128000}).catch(() => null);
+          const details = await request('/song/detail', {ids:ids.join(',')});
           const songs = new Map((details.songs || []).map(track => [String(track.id), track]));
           const https = value => {
             try { const url = new URL(value); if (!['http:','https:'].includes(url.protocol)) return ''; url.protocol = 'https:'; return url.href; } catch (_) { return ''; }
           };
-          const tracks = ids.flatMap(id => {
-            const song = songs.get(String(id)); const audio = urls.get(String(id));
-            const url = https(audio?.url);
-            if (!song || !url) return [];
-            return [{name:escape(song.name + (audio.freeTrialInfo ? '（试听）' : '')), artist:escape((song.ar || []).map(artist => artist.name).join(' / ')), url, cover:https(song.al?.picUrl)}];
+          const tracks = ids.map(id => {
+            const song = songs.get(String(id));
+            return {name:escape(song?.name || '歌曲 ' + id), artist:escape((song?.ar || []).map(artist => artist.name).join(' / ')), url:'', type:'unavailable', pending:true, cover:https(song?.al?.picUrl)};
           });
-          if (!tracks.length) throw Error('No playable tracks');
           player.list.clear(); player.list.add(tracks);
+          const audio = await audioPromise;
+          const urls = new Map((audio?.data || []).map(track => [String(track.id), track]));
+          player.list.audios.forEach((track, index) => {
+            const result = urls.get(String(ids[index]));
+            track.url = https(result?.url); track.pending = false;
+            track.type = track.url ? 'normal' : 'unavailable';
+            const label = !audio ? '（音源加载失败）' : !track.url ? '（暂不可播）' : result.freeTrialInfo ? '（试听）' : '';
+            const name = (songs.get(String(ids[index]))?.name || '歌曲 ' + ids[index]) + label;
+            track.name = escape(name);
+            player.template.listOl.children[index].querySelector('.aplayer-list-title').textContent = name;
+          });
+          const firstPlayable = player.list.audios.findIndex(track => track.url);
+          player.list.switch(firstPlayable >= 0 ? firstPlayable : 0);
+          if (!audio) player.notice('音源加载失败，请刷新重试；歌单已保留', 5000);
         } catch (_) { showStatus('歌单暂时不可用', true); }
         finally { loading = false; }
       }
