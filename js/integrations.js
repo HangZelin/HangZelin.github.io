@@ -28,10 +28,22 @@
     }
     if (aside && !document.querySelector('#visitor-globe-card')) {
       const card = document.createElement('section');card.id = 'visitor-globe-card';card.className = 'card-widget integration-card';
-      card.innerHTML = '<h3>访客地图</h3><div id="visitor-globe"></div><p class="integration-status">地图由 MapMyVisitors 提供，点击下方查看访客统计。</p><a href="https://mapmyvisitors.com/web/1c87m" target="_blank" rel="noopener">MapMyVisitors</a>';
+      card.innerHTML = '<h3>访客地图</h3><div id="visitor-globe"></div>';
+      const globe = card.querySelector('#visitor-globe');
+      const statsUrl = 'https://mapmyvisitors.com/web/1c87m';
+      const linkObserver = new MutationObserver(() => {
+        const link = globe.querySelector('a');
+        if (link) {
+          link.href = statsUrl; link.target = '_blank'; link.rel = 'noopener';
+          link.setAttribute('aria-label', '查看访客统计');
+          link.title = '点击查看访客统计';
+          linkObserver.disconnect();
+        }
+      });
+      linkObserver.observe(globe, {childList:true, subtree:true});
       const announcement = aside.querySelector('.card-announcement');
       if (announcement) announcement.after(card); else aside.prepend(card);
-      if (!document.getElementById('mmvst_globe')) { const script = document.createElement('script');script.id = 'mmvst_globe';script.src = 'https://mapmyvisitors.com/globe.js?d=qB8Y1tSSd2fKSVUvPqG2zssVzzqHv8zbeOXl2K4GjRc';script.async = true;script.onerror = () => {card.querySelector('.integration-status').textContent = '地图暂时未加载，可点击下方查看 MapMyVisitors 统计。';};card.querySelector('#visitor-globe').append(script); }
+      if (!document.getElementById('mmvst_globe')) { const script = document.createElement('script');script.id = 'mmvst_globe';script.src = 'https://mapmyvisitors.com/globe.js?d=qB8Y1tSSd2fKSVUvPqG2zssVzzqHv8zbeOXl2K4GjRc';script.async = true;script.onerror = () => {linkObserver.disconnect(); const link = document.createElement('a'); link.href = statsUrl; link.target = '_blank'; link.rel = 'noopener'; link.textContent = '地图暂未加载，点击查看访客统计'; globe.append(link);};globe.append(script); }
     }
     if (!document.getElementById('site-music-player') && window.APlayer) {
       const container = document.createElement('div');
