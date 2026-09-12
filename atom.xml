@@ -36,7 +36,7 @@
     <published>2022-12-31T14:29:00.000Z</published>
     <summary>2022，就这么说再见了。</summary>
     <title>2022的一小点总结</title>
-    <updated>2026-09-12T04:16:37.885Z</updated>
+    <updated>2026-09-12T07:13:39.109Z</updated>
   </entry>
   <entry>
     <author>
@@ -62,17 +62,6 @@
     <published>2022-07-13T16:07:00.000Z</published>
     <summary>学习Spring boot项目时用到的基本api部分内容。包含了Restful Api 和 JWT 等常见网络请求和身份验证功能。</summary>
     <title>Spring boot Bilibili Api开发日志</title>
-    <updated>2026-09-12T03:50:24.764Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>Hang Zelin</name>
-    </author>
-    <id>https://unique0217.xyz/2022/07/13/test/</id>
-    <link href="https://unique0217.xyz/2022/07/13/test/"/>
-    <published>2022-07-13T15:56:32.000Z</published>
-    <summary>简单测试一下可不可以post东西上去！Test!</summary>
-    <title>Test</title>
     <updated>2026-09-12T03:50:24.764Z</updated>
   </entry>
 </feed>
