@@ -2,6 +2,7 @@
 .media-group{margin:20px 0}.media-group summary{font-size:1.15rem;font-weight:600;cursor:pointer}.media-item{display:flex;gap:18px;margin:20px 0;padding-bottom:20px;border-bottom:1px solid #8883}.media-item img{width:90px;height:130px;object-fit:cover}.media-item p{font-size:13px;margin:4px 0!important}.media-item a{font-weight:600}.media-updated{font-size:13px;opacity:.8}
 
 .media-item img{flex-shrink:0}.media-item>div{min-width:0;overflow-wrap:anywhere}
+.card-announcement canvas.illo{display:block;width:200px!important;height:200px!important;max-width:100%;margin:12px auto 0;touch-action:none;cursor:move}
 
 #site-music-player{z-index:100}#site-music-player .music-retry{margin-left:8px;color:#49b1f5;cursor:pointer;background:transparent;border:0;font-size:12px}#site-music-player .aplayer-author a{color:#777}
 

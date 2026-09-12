@@ -14,10 +14,23 @@
       }).catch(() => { card.querySelector('.integration-status').textContent = '贡献记录暂不可用，可前往 GitHub 查看。'; });
     }
     const aside = document.querySelector('#aside-content');
+    const figure = aside?.querySelector('.card-announcement canvas.illo');
+    if (figure && !figure.dataset.initialized) {
+      figure.dataset.initialized = 'true';
+      const load = src => new Promise((resolve, reject) => {
+        const script = document.createElement('script'); script.src = src;
+        script.onload = resolve; script.onerror = reject; document.head.append(script);
+      });
+      window.announcementAssets ||= load('/vendor/announcement/zdog.dist.js').then(() => load('/vendor/announcement/twopeople.js'));
+      window.announcementAssets.then(() => {
+        if (figure.isConnected) window.initAnnouncementFigure(figure);
+      }).catch(() => { figure.hidden = true; });
+    }
     if (aside && !document.querySelector('#visitor-globe-card')) {
       const card = document.createElement('section');card.id = 'visitor-globe-card';card.className = 'card-widget integration-card';
       card.innerHTML = '<h3>访客地图</h3><div id="visitor-globe"></div><p class="integration-status">地图由 MapMyVisitors 提供，点击下方查看访客统计。</p><a href="https://mapmyvisitors.com/web/1c87m" target="_blank" rel="noopener">MapMyVisitors</a>';
-      aside.append(card);
+      const announcement = aside.querySelector('.card-announcement');
+      if (announcement) announcement.after(card); else aside.prepend(card);
       if (!document.getElementById('mmvst_globe')) { const script = document.createElement('script');script.id = 'mmvst_globe';script.src = 'https://mapmyvisitors.com/globe.js?d=qB8Y1tSSd2fKSVUvPqG2zssVzzqHv8zbeOXl2K4GjRc';script.async = true;script.onerror = () => {card.querySelector('.integration-status').textContent = '地图暂时未加载，可点击下方查看 MapMyVisitors 统计。';};card.querySelector('#visitor-globe').append(script); }
     }
     if (!document.getElementById('site-music-player') && window.APlayer) {
