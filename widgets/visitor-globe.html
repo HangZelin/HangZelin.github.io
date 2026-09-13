@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>访客地球</title>
+<style>html,body{margin:0;background:transparent;font:14px sans-serif}#status{padding:20px 0;color:#777}a,button{color:#49b1f5}button{background:none;border:1px solid;border-radius:4px;padding:5px 10px;cursor:pointer}</style></head>
+<body><div id="widget"><script defer id="mmvst_globe" src="https://mapmyvisitors.com/globe.js?d=qB8Y1tSSd2fKSVUvPqG2zssVzzqHv8zbeOXl2K4GjRc"></script></div>
+<div id="status" hidden>地球暂未加载。<button id="retry" type="button">重试</button> <a href="https://mapmyvisitors.com/web/1c87m" target="_blank" rel="noopener">查看统计</a></div>
+<script>
+const widget=document.getElementById('widget'),status=document.getElementById('status');
+document.getElementById('retry').onclick=()=>location.reload();
+const observer=new MutationObserver(()=>{
+ const link=widget.querySelector('a');
+ if(link){link.href='https://mapmyvisitors.com/web/1c87m';link.target='_blank';link.rel='noopener';link.setAttribute('aria-label','查看访客统计');observer.disconnect();}
+});
+observer.observe(widget,{childList:true,subtree:true});
+setTimeout(()=>{
+ const globe=widget.querySelector('.mmvst_globe');
+ if(!globe || getComputedStyle(globe).display==='none'){widget.hidden=true;status.hidden=false;observer.disconnect();}
+},20000);
+</script></body></html>

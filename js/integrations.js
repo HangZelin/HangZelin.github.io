@@ -38,22 +38,9 @@
     }
     if (aside && !document.querySelector('#visitor-globe-card')) {
       const card = document.createElement('section');card.id = 'visitor-globe-card';card.className = 'card-widget integration-card';
-      card.innerHTML = '<h3>访客地图</h3><div id="visitor-globe"></div>';
-      const globe = card.querySelector('#visitor-globe');
-      const statsUrl = 'https://mapmyvisitors.com/web/1c87m';
-      const linkObserver = new MutationObserver(() => {
-        const link = globe.querySelector('a');
-        if (link) {
-          link.href = statsUrl; link.target = '_blank'; link.rel = 'noopener';
-          link.setAttribute('aria-label', '查看访客统计');
-          link.title = '点击查看访客统计';
-          linkObserver.disconnect();
-        }
-      });
-      linkObserver.observe(globe, {childList:true, subtree:true});
+      card.innerHTML = '<h3>访客地图</h3><iframe title="访客地球，点击查看统计" src="/widgets/visitor-globe.html" style="display:block;width:100%;aspect-ratio:1/1.15;border:0" loading="eager"></iframe>';
       const announcement = aside.querySelector('.card-announcement');
       if (announcement) announcement.after(card); else aside.prepend(card);
-      if (!document.getElementById('mmvst_globe')) { const script = document.createElement('script');script.id = 'mmvst_globe';script.src = 'https://mapmyvisitors.com/globe.js?d=qB8Y1tSSd2fKSVUvPqG2zssVzzqHv8zbeOXl2K4GjRc';script.async = true;script.onerror = () => {linkObserver.disconnect(); const link = document.createElement('a'); link.href = statsUrl; link.target = '_blank'; link.rel = 'noopener'; link.textContent = '地图暂未加载，点击查看访客统计'; globe.append(link);};globe.append(script); }
     }
     if (!document.getElementById('site-music-player') && window.APlayer) {
       const container = document.createElement('div');
