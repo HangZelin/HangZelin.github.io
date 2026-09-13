@@ -104,10 +104,18 @@
           const request = async (route, params) => {
             const url = new URL(api.href.replace(/\/$/, '') + route);
             url.search = new URLSearchParams(params).toString();
+            const cacheKey = 'blog-music-v1:' + url.href;
+            try {
+              const cached = JSON.parse(sessionStorage.getItem(cacheKey));
+              if (cached?.until > Date.now() && cached.body?.code === 200) return cached.body;
+            } catch (_) {}
             const response = await fetch(url, {signal:AbortSignal.timeout(20000)});
             if (!response.ok) throw Error('Music request failed');
             const body = await response.json();
             if (body.code !== 200) throw Error('Music API error');
+            // Metadata lasts longer; signed audio URLs must be refreshed soon.
+            const ttl = route === '/song/url' ? 60000 : 300000;
+            try { sessionStorage.setItem(cacheKey, JSON.stringify({until:Date.now()+ttl, body})); } catch (_) {}
             return body;
           };
           const playlist = await request('/playlist/detail', {id:config.playlistId});

@@ -6,7 +6,7 @@
     const close = () => { menu.style.display = 'none'; mask.style.display = 'none'; };
     const actions = {
       'menu-backward': () => history.back(), 'menu-forward': () => history.forward(),
-      'menu-refresh': () => location.reload(), 'menu-home': () => { location.href = '/'; },
+      'menu-refresh': () => location.reload(), 'menu-home': () => { if (window.pjax) window.pjax.loadUrl('/'); else location.href = '/'; },
       'menu-translate': () => document.getElementById('translateLink')?.click(),
       'menu-darkmode': () => document.getElementById('darkmode')?.click(),
       'menu-print': () => window.print()
